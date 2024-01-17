@@ -37,6 +37,16 @@ async function run() {
     const assetCollection = client.db("rigDB").collection("assets");
     const earningCollection = client.db("rigDB").collection("earnings");
     const expenseCollection = client.db("rigDB").collection("expense");
+    const userCollection = client.db("rigDB").collection("users");
+
+    // user role
+    app.get("/users/:email", async (req, res) => {
+      const userEmail = req.params.email;
+      const result = await userCollection
+        .find({ email: userEmail })
+        .toArray();
+      res.send(result);
+    });
 
     // available assets
     app.get("/assets", async (req, res) => {
@@ -55,6 +65,11 @@ async function run() {
     });
 
     // added earning
+    app.get("/earning", async (req, res) => {
+      const result = await earningCollection.find().toArray();
+      res.send(result);
+    });
+
     app.get("/earnings/:email", async (req, res) => {
       const userEmail = req.params.email;
       const result = await earningCollection
@@ -70,6 +85,11 @@ async function run() {
     });
 
     // added expense
+    app.get("/expense", async (req, res) => {
+      const result = await expenseCollection.find().toArray();
+      res.send(result);
+    });
+
     app.get("/expenses/:email", async (req, res) => {
       const userEmail = req.params.email;
       const result = await expenseCollection
